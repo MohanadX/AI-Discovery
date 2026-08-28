@@ -1,0 +1,212 @@
+// AI Discovery — PostgreSQL schema for the public tools + news module.
+// Connection URLs live in prisma.config.ts and the application Prisma client.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum PricingModel {
+  FREE
+  FREEMIUM
+  PAID
+  FREE_TRIAL
+  CONTACT
+}
+
+enum ToolStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum NewsStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  description String?
+  accent    String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tools ToolCategory[]
+  news  NewsArticle[]
+
+  @@index([sortOrder])
+  @@map("categories")
+}
+
+model Platform {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tools ToolPlatform[]
+
+  @@index([sortOrder])
+  @@map("platforms")
+}
+
+model Tool {
+  id              String       @id @default(cuid())
+  slug            String       @unique
+  name            String
+  tagline         String
+  description     String
+  logoUrl         String?
+  websiteUrl      String
+  docsUrl         String?
+  companyName     String
+  companyUrl      String?
+  companyLocation String?
+  pricingModel    PricingModel
+  pricingNote     String?
+  status          ToolStatus   @default(DRAFT)
+  isFeatured      Boolean      @default(false)
+  isVerified      Boolean      @default(false)
+  popularityScore Int          @default(0)
+  launchDate      DateTime?
+  publishedAt     DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  categories  ToolCategory[]
+  platforms   ToolPlatform[]
+  capabilities ToolCapability[]
+  useCases    ToolUseCase[]
+  screenshots ToolScreenshot[]
+  news        NewsArticleTool[]
+
+  @@index([status, isFeatured])
+  @@index([status, popularityScore])
+  @@index([status, publishedAt])
+  @@index([pricingModel])
+  @@index([name])
+  @@map("tools")
+}
+
+model ToolCategory {
+  toolId     String
+  categoryId String
+  createdAt  DateTime @default(now())
+
+  tool     Tool     @relation(fields: [toolId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([toolId, categoryId])
+  @@index([categoryId])
+  @@map("tool_categories")
+}
+
+model ToolPlatform {
+  toolId     String
+  platformId String
+  createdAt  DateTime @default(now())
+
+  tool     Tool     @relation(fields: [toolId], references: [id], onDelete: Cascade)
+  platform Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+
+  @@id([toolId, platformId])
+  @@index([platformId])
+  @@map("tool_platforms")
+}
+
+model ToolCapability {
+  id        String   @id @default(cuid())
+  toolId    String
+  title     String
+  summary   String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  tool Tool @relation(fields: [toolId], references: [id], onDelete: Cascade)
+
+  @@index([toolId, sortOrder])
+  @@map("tool_capabilities")
+}
+
+model ToolUseCase {
+  id        String   @id @default(cuid())
+  toolId    String
+  title     String
+  summary   String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  tool Tool @relation(fields: [toolId], references: [id], onDelete: Cascade)
+
+  @@index([toolId, sortOrder])
+  @@map("tool_use_cases")
+}
+
+model ToolScreenshot {
+  id          String   @id @default(cuid())
+  toolId      String
+  imageUrl    String
+  altText     String
+  caption     String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  tool Tool @relation(fields: [toolId], references: [id], onDelete: Cascade)
+
+  @@index([toolId, sortOrder])
+  @@map("tool_screenshots")
+}
+
+model NewsArticle {
+  id              String     @id @default(cuid())
+  slug            String     @unique
+  title           String
+  excerpt         String
+  body            String
+  coverImageUrl   String?
+  sourceName      String
+  sourceUrl       String?
+  authorName      String?
+  topic           String
+  readingMinutes  Int        @default(4)
+  status          NewsStatus @default(DRAFT)
+  isFeatured      Boolean    @default(false)
+  publishedAt     DateTime?
+  categoryId      String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  category Category?         @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  tools    NewsArticleTool[]
+
+  @@index([status, publishedAt])
+  @@index([status, isFeatured])
+  @@index([topic])
+  @@index([categoryId])
+  @@map("news_articles")
+}
+
+model NewsArticleTool {
+  articleId String
+  toolId    String
+  createdAt DateTime @default(now())
+
+  article NewsArticle @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  tool    Tool        @relation(fields: [toolId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, toolId])
+  @@index([toolId])
+  @@map("news_article_tools")
+}

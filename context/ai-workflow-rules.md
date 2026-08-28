@@ -2,61 +2,36 @@
 
 ## Approach
 
-[Describe the overall development approach — e.g. Build
-this project incrementally using a spec-driven workflow.
-Context files define what to build, how to build it, and
-the current state of progress. Always implement against
-these specs — do not infer or invent behavior from scratch.]
+Build incrementally with a context-first vertical-slice workflow. These documents define the product boundary, UI, architecture, and current state. Resolve ambiguity here and never infer unrelated AI Orbit behavior.
 
-## Scoping Rules
+## Scoping
 
-- Work on one feature unit at a time
-- Prefer small, verifiable increments over large
-  speculative changes
-- Do not combine unrelated system boundaries in a
-  single implementation step
+- Implement one verifiable unit at a time.
+- Limit work to tools listing/details, ecosystem news, and supporting states.
+- Do not introduce auth, CMS/admin, submissions, reviews, billing, scraping, or unrelated modules.
+- Split data foundation, shared shell, tools listing, details, news, and hardening into milestones.
 
-## When to Split Work
+## Before Code
 
-Split an implementation step if it combines:
+1. Read relevant context and inspect existing code/package versions.
+2. Read applicable bundled Next.js 16 documentation.
+3. Confirm/document dependencies before adding them.
+4. Record unresolved choices in `progress-tracker.md` rather than inventing behavior.
 
-- [Concern one — e.g. UI changes and background task changes]
-- [Concern two — e.g. Multiple unrelated API routes]
-- [Concern three — e.g. Behavior not clearly defined in
-  the context files]
+## Protected Files and Data
 
-If a change cannot be verified end to end quickly,
-the scope is too broad — split it.
+- Never hand-edit `node_modules`, `.next`, generated Prisma Client, or third-party internals.
+- Never edit applied migrations; create new ones.
+- Never commit `.env`, credentials, `.vercel`, or provider secrets.
+- Preserve the assignment brief and do not copy proprietary AI Orbit copy/media.
 
-## Handling Missing Requirements
+## Verification
 
-- Do not invent product behavior not defined in the
-  context files
-- If a requirement is ambiguous, resolve it in the
-  relevant context file before implementing
-- If a requirement is missing, add it as an open question
-  in `progress-tracker.md` before continuing
+- Data: format/validate schema, generate Client, migrate when a database exists, seed, inspect relationships.
+- UI: verify responsive, keyboard, focus, loading, empty, error, and not-found behavior.
+- Code: run focused tests, lint, and build.
+- Explicitly record credential-dependent checks that could not run and their follow-up command.
 
-## Protected Files
+## Completion Gate
 
-Do not modify the following unless explicitly instructed:
-
-- [e.g. components/ui/* — generated UI library components]
-- [e.g. Any third-party library internals]
-
-## Keeping Docs in Sync
-
-Update the relevant context file whenever implementation
-changes:
-
-- System architecture or boundaries
-- Storage model decisions
-- Code conventions or standards
-- Feature scope
-
-## Before Moving to the Next Unit
-
-1. The current unit works end to end within its defined scope
-2. No invariant defined in `architecture.md` was violated
-3. `progress-tracker.md` reflects the completed work
-4. `npm run build` passes
+The unit works end-to-end, architecture invariants hold, context/progress match code, and checks pass or an external limitation is documented.
