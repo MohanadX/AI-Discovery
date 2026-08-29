@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, Suspense } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { ToolsFilter } from "@/lib/domain/tools";
 import type { ToolsListResult, CategoryOption } from "@/lib/data/tools";

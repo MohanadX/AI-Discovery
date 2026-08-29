@@ -35,10 +35,7 @@
 - **`components/tools/ToolRow.tsx`** — single tool row: logo, name+tagline, category badge, pricing, platforms, date.
 - **`components/tools/InfiniteToolsList.tsx`** — React Query `useInfiniteQuery` + IntersectionObserver sentinel; bootstraps only when initialData.page === 1.
 - **`components/tools/ToolsPagination.tsx`** — controlled prev/next pagination.
-- **`components/go-up-button.tsx`** — respects `prefers-reduced-motion`; uses defined `--color-*` CSS tokens.
-- **`lib/data/tools.ts`** — server-only `getToolsList` (paginated, filtered) + `getCategories`; Prisma read-model mapping; deterministic orderBy with secondary `id` key.
-- **`lib/utils.ts`** — `formatDate` uses explicit UTC timeZone for consistent SSR/client rendering.
-- **`prisma/seed.ts`** — category accents use only CATEGORY_ACCENTS-supported values; logoUrl color padded to 6 hex chars; Chatbots category found by slug.
+- Hardened listing filters, pagination ordering, reduced-motion behavior, date formatting, theme linting, and seed display values after review.
 - **`next.config.ts`** — `placehold.co` added to image remote patterns.
 - `server-only` package installed.
 - `npx next typegen` run; types generated successfully.
