@@ -99,7 +99,8 @@ export function InfiniteToolsList({
           filter.q === initialFilter.q &&
           filter.category === initialFilter.category &&
           filter.sort === initialFilter.sort &&
-          filter.pricing === initialFilter.pricing;
+          filter.pricing === initialFilter.pricing &&
+          initialData.page === 1;
         return isInitial
           ? {
               pages: [initialData],

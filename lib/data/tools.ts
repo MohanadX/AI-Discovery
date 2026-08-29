@@ -70,10 +70,10 @@ export async function getToolsList(
   // Build orderBy
   const orderBy =
     sort === "popular"
-      ? [{ popularityScore: "desc" as const }]
+      ? [{ popularityScore: "desc" as const }, { id: "asc" as const }]
       : sort === "name"
-        ? [{ name: "asc" as const }]
-        : [{ publishedAt: "desc" as const }]; // newest (default)
+        ? [{ name: "asc" as const }, { id: "asc" as const }]
+        : [{ publishedAt: "desc" as const }, { id: "asc" as const }]; // newest (default)
 
   const skip = (page - 1) * PAGE_SIZE;
 

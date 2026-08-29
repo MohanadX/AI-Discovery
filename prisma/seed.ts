@@ -31,10 +31,10 @@ async function main() {
     { slug: 'audio-generation', name: 'Audio Generation', description: 'AI tools for music, voice, and audio generation.', accent: 'green', sortOrder: 4 },
     { slug: 'video-generation', name: 'Video Generation', description: 'Create and edit videos using AI.', accent: 'red', sortOrder: 5 },
     { slug: 'writing-assistants', name: 'Writing Assistants', description: 'Tools that help you write better content.', accent: 'teal', sortOrder: 6 },
-    { slug: 'productivity', name: 'Productivity', description: 'AI tools to boost your daily productivity.', accent: 'orange', sortOrder: 7 },
-    { slug: 'design', name: 'Design', description: 'AI tools for graphic design and UI/UX.', accent: 'pink', sortOrder: 8 },
-    { slug: 'data-analysis', name: 'Data Analysis', description: 'Analyze data and generate insights with AI.', accent: 'indigo', sortOrder: 9 },
-    { slug: 'marketing', name: 'Marketing', description: 'AI tools for marketing and SEO.', accent: 'yellow', sortOrder: 10 },
+    { slug: 'productivity', name: 'Productivity', description: 'AI tools to boost your daily productivity.', accent: 'amber', sortOrder: 7 },
+    { slug: 'design', name: 'Design', description: 'AI tools for graphic design and UI/UX.', accent: 'teal', sortOrder: 8 },
+    { slug: 'data-analysis', name: 'Data Analysis', description: 'Analyze data and generate insights with AI.', accent: 'blue', sortOrder: 9 },
+    { slug: 'marketing', name: 'Marketing', description: 'AI tools for marketing and SEO.', accent: 'amber', sortOrder: 10 },
   ];
 
   const dbCategories = [];
@@ -90,7 +90,7 @@ async function main() {
         name: toolName,
         tagline: `The best ${randomAdjective.toLowerCase()} solution for your needs.`,
         description: `This is a generated AI tool description for ${toolName}. It leverages state-of-the-art models to provide amazing features.`,
-        logoUrl: `https://placehold.co/200x200/${Math.floor(Math.random()*16777215).toString(16)}/ffffff?text=${toolName.charAt(0)}`,
+        logoUrl: `https://placehold.co/200x200/${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}/ffffff?text=${toolName.charAt(0)}`,
         websiteUrl: `https://${slug}.example.com`,
         companyName: `${randomAdjective} Tech LLC`,
         companyUrl: `https://${randomAdjective.toLowerCase()}tech.example.com`,
@@ -116,6 +116,7 @@ async function main() {
   }
 
   // Create one News
+  const chatbotsCategory = dbCategories.find((c) => c.slug === 'chatbots');
   await prisma.newsArticle.create({
     data: {
       slug: 'gpt4-omni-release',
@@ -128,7 +129,7 @@ async function main() {
       status: 'PUBLISHED',
       isFeatured: true,
       publishedAt: new Date(),
-      categoryId: dbCategories[1].id, // Chatbots
+      categoryId: chatbotsCategory?.id ?? dbCategories[1]?.id,
     }
   });
 

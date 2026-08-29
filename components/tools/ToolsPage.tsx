@@ -34,6 +34,7 @@ export function ToolsPage({
     const params = new URLSearchParams();
     if (filter.q) params.set("q", filter.q);
     if (filter.category) params.set("category", filter.category);
+    if (filter.pricing) params.set("pricing", filter.pricing);
     if (filter.sort) params.set("sort", filter.sort);
     if (filter.page > 1) params.set("page", String(filter.page));
     const qs = params.toString();
@@ -50,6 +51,7 @@ export function ToolsPage({
       const params = new URLSearchParams();
       if (filter.q) params.set("q", filter.q);
       if (filter.category) params.set("category", filter.category);
+      if (filter.pricing) params.set("pricing", filter.pricing);
       if (filter.sort) params.set("sort", filter.sort);
       if (filter.page > 1) params.set("page", String(filter.page));
 
@@ -64,6 +66,7 @@ export function ToolsPage({
       const isInitial =
         filter.q === initialFilter.q &&
         filter.category === initialFilter.category &&
+        filter.pricing === initialFilter.pricing &&
         filter.sort === initialFilter.sort &&
         filter.page === initialFilter.page;
       return isInitial ? initialData : undefined;

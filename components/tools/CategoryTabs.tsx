@@ -10,15 +10,14 @@ export const TAB_TOOLS = "tools";
 type Tab = {
   id: string; // matches ?tab= param
   label: string;
-  mode: "infinite" | "offset";
 };
 
 function buildTabs(categories: CategoryOption[]): Tab[] {
   const built: Tab[] = [
-    { id: TAB_TOOLS, label: "All Tools", mode: "offset" },
+    { id: TAB_TOOLS, label: "All Tools" },
   ];
   for (const cat of categories) {
-    built.push({ id: cat.slug, label: cat.name, mode: "offset" });
+    built.push({ id: cat.slug, label: cat.name });
   }
   return built;
 }
@@ -37,7 +36,7 @@ export function CategoryTabs({
   const handleTabClick = useCallback(
     (tab: Tab) => {
       if (tab.id === TAB_TOOLS) {
-        onFilterChange({ category: undefined, page: 1 });
+        onFilterChange({ category: "", page: 1 });
       } else {
         onFilterChange({ category: tab.id, page: 1 });
       }

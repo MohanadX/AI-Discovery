@@ -36,28 +36,6 @@ export function SiteHeader() {
           <NavLink href="/tools">Tools</NavLink>
           <NavLink href="/news">News</NavLink>
         </nav>
-
-        {/* CTA */}
-        <div className="flex items-center">
-          <button
-            type="button"
-            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors"
-            style={{
-              backgroundColor: "var(--color-accent)",
-              color: "#fff",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor =
-                "var(--color-accent-hover)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor =
-                "var(--color-accent)";
-            }}>
-            <span aria-hidden="true">+</span>
-            <span>Submit Tool</span>
-          </button>
-        </div>
       </div>
     </header>
   );

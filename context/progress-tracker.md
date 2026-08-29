@@ -21,20 +21,24 @@
 - **`lib/data/tools.ts`** — server-only `getToolsList` (paginated, filtered) + `getCategories`; Prisma read-model mapping.
 - **`app/api/tools/route.ts`** — JSON route handler powering React Query.
 - **`components/providers/QueryProvider.tsx`** — React Query `QueryClientProvider` client boundary.
-- **`components/layout/SiteHeader.tsx`** — sticky translucent nav with logo, links, and Submit Tool CTA.
+- **`components/layout/SiteHeader.tsx`** — sticky translucent nav with logo and links.
 - **`components/layout/SiteFooter.tsx`** — minimal dark footer.
 - **`app/layout.tsx`** — updated root layout: SEO metadata, `QueryProvider`, `SiteHeader`, `SiteFooter`.
 - **`app/page.tsx`** — root redirects to `/tools`.
 - **`app/tools/page.tsx`** — async server page: awaits searchParams, parallel data fetch, passes initial data to `ToolsPage`.
 - **`app/tools/loading.tsx`** — geometry-matched skeleton for the full list layout.
 - **`app/tools/error.tsx`** — client error boundary with retry.
-- **`components/tools/ToolsPage.tsx`** — Client Component orchestrator using `useQuery` for client-side interactivity while hydrating server `initialData`.
-- **`components/tools/CategoryTabs.tsx`** — controlled tab bar.
-- **`components/tools/ToolsControls.tsx`** — controlled debounced search input + sort dropdown.
+- **`components/tools/ToolsPage.tsx`** — Client Component orchestrator using `useQuery` for client-side interactivity while hydrating server `initialData`; preserves pricing filter in URL, API params, and initialData comparison.
+- **`components/tools/CategoryTabs.tsx`** — controlled tab bar; resets category to empty string for "all categories"; removed unused `mode` property.
+- **`components/tools/ToolsControls.tsx`** — controlled debounced search input + sort dropdown; cancels pending debounce on clear.
 - **`components/tools/ToolsTable.tsx`** — shared table shell with column headers and empty state.
 - **`components/tools/ToolRow.tsx`** — single tool row: logo, name+tagline, category badge, pricing, platforms, date.
-- **`components/tools/InfiniteToolsList.tsx`** — React Query `useInfiniteQuery` + IntersectionObserver sentinel; bootstrapped with server `initialData`.
+- **`components/tools/InfiniteToolsList.tsx`** — React Query `useInfiniteQuery` + IntersectionObserver sentinel; bootstraps only when initialData.page === 1.
 - **`components/tools/ToolsPagination.tsx`** — controlled prev/next pagination.
+- **`components/go-up-button.tsx`** — respects `prefers-reduced-motion`; uses defined `--color-*` CSS tokens.
+- **`lib/data/tools.ts`** — server-only `getToolsList` (paginated, filtered) + `getCategories`; Prisma read-model mapping; deterministic orderBy with secondary `id` key.
+- **`lib/utils.ts`** — `formatDate` uses explicit UTC timeZone for consistent SSR/client rendering.
+- **`prisma/seed.ts`** — category accents use only CATEGORY_ACCENTS-supported values; logoUrl color padded to 6 hex chars; Chatbots category found by slug.
 - **`next.config.ts`** — `placehold.co` added to image remote patterns.
 - `server-only` package installed.
 - `npx next typegen` run; types generated successfully.
