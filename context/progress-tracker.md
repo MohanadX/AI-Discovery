@@ -2,11 +2,11 @@
 
 ## Current Phase
 
-- Phase 1 — specification and persistence foundation in progress.
+- Phase 2 — UI and data layer complete; first module (tools listing) implemented.
 
 ## Current Goal
 
-- Finalize context, add Prisma/PostgreSQL tables, and seed deterministic showcase tool/news data.
+- Tool detail page (`/tools/[slug]`).
 
 ## Completed
 
@@ -15,27 +15,47 @@
 - Limited scope to public tools listing/details, ecosystem news, and supporting states.
 - Selected Vercel + Neon Marketplace with pooled runtime and direct migration URLs.
 - Populated the product, UI, architecture, standards, theme, and workflow context.
-- Prisma 7 setup, normalized schema, and initial migration (seed pending user action).
+- Prisma 7 setup, normalized schema, and initial migration with deterministic mock data seed.
+- **`app/globals.css`** — full dark design token system (semantic CSS vars + Tailwind 4 `@theme inline`).
+- **`lib/domain/tools.ts`** — `ToolListItem`, `ToolsFilter` (with `tab` field), `parseToolsFilter`, display helpers.
+- **`lib/data/tools.ts`** — server-only `getToolsList` (paginated, filtered) + `getCategories`; Prisma read-model mapping.
+- **`app/api/tools/route.ts`** — JSON route handler powering React Query.
+- **`components/providers/QueryProvider.tsx`** — React Query `QueryClientProvider` client boundary.
+- **`components/layout/SiteHeader.tsx`** — sticky translucent nav with logo and links.
+- **`components/layout/SiteFooter.tsx`** — minimal dark footer.
+- **`app/layout.tsx`** — updated root layout: SEO metadata, `QueryProvider`, `SiteHeader`, `SiteFooter`.
+- **`app/page.tsx`** — root redirects to `/tools`.
+- **`app/tools/page.tsx`** — async server page: awaits searchParams, parallel data fetch, passes initial data to `ToolsPage`.
+- **`app/tools/loading.tsx`** — geometry-matched skeleton for the full list layout.
+- **`app/tools/error.tsx`** — client error boundary with retry.
+- **`components/tools/ToolsPage.tsx`** — Client Component orchestrator using `useQuery` for client-side interactivity while hydrating server `initialData`; preserves pricing filter in URL, API params, and initialData comparison.
+- **`components/tools/CategoryTabs.tsx`** — controlled tab bar; resets category to empty string for "all categories"; removed unused `mode` property.
+- **`components/tools/ToolsControls.tsx`** — controlled debounced search input + sort dropdown; cancels pending debounce on clear.
+- **`components/tools/ToolsTable.tsx`** — shared table shell with column headers and empty state.
+- **`components/tools/ToolRow.tsx`** — single tool row: logo, name+tagline, category badge, pricing, platforms, date.
+- **`components/tools/InfiniteToolsList.tsx`** — React Query `useInfiniteQuery` + IntersectionObserver sentinel; bootstraps only when initialData.page === 1.
+- **`components/tools/ToolsPagination.tsx`** — controlled prev/next pagination.
+- Hardened listing filters, pagination ordering, reduced-motion behavior, date formatting, theme linting, and seed display values after review.
+- **`next.config.ts`** — `placehold.co` added to image remote patterns.
+- `server-only` package installed.
+- `npx next typegen` run; types generated successfully.
+- `npx tsc --noEmit` — **0 errors**.
 
 ## In Progress
 
-1. Shared theme, root metadata, header, and footer.
+- (None — tools listing complete and type-checked.)
 
 ## Next Up
 
-1. Shared theme, root metadata, header, and footer.
-2. Server-side data access/read models.
-3. Tools listing with URL-driven controls.
-4. Tool details and related content.
-5. News listing/details.
-6. Full states, responsive/accessibility, and deployment verification.
+1. Tool detail page — `/tools/[slug]`.
+2. News listing — `/news`.
+3. News detail — `/news/[slug]`.
+4. Full responsive/accessibility pass and deployment verification.
 
 ## Open Questions
 
 - May real third-party logos be stored locally? Use neutral generated marks until licensing is clear.
 - Should news contain full original editorial articles or local summaries linking to attributed sources?
-
-Neither blocks the schema or original mock data.
 
 ## Architecture Decisions
 
@@ -46,10 +66,12 @@ Neither blocks the schema or original mock data.
 - Server-first database reads; narrow Client Components.
 - URL owns directory state; deterministic slugs/keys make seeds rerunnable.
 - Dark-only AI Orbit-inspired interface.
+- **Dual pagination modes**: "All Tools" tab uses infinite scroll via React Query `useInfiniteQuery`. All other category tabs use standard offset pagination via React Query `useQuery`.
+- `ToolListItem.publishedAt` is rehydrated from ISO string to `Date` on the client after API fetch.
 
 ## Session Notes
 
-- The app still shows the Create Next App page; UI begins after persistence.
-- Context files began as untracked templates.
-- Local `.env` is empty, so applying a migration/seeding requires Neon or local PostgreSQL credentials.
+- `server-only` was not in the initial deps; installed in Phase 2.
+- `placehold.co` required explicit Next.js image remote-pattern allowlist.
+- `PageProps<"/tools">` requires `next typegen`; replaced with explicit inline type for robustness.
 - Never implement unrelated AI Orbit areas, admin features, or authentication.

@@ -1,16 +1,17 @@
-import 'dotenv/config';
-import { PrismaClient } from '../generated/prisma';
-import { PrismaPg } from '@prisma/adapter-pg';
+import "dotenv/config";
+import { PrismaClient, PricingModel } from "../generated/prisma";
+import { PrismaPg } from "@prisma/adapter-pg";
 
-const connectionString = process.env.PRISMA_DATABASE_URL || process.env.DATABASE_URL;
+const connectionString =
+  process.env.PRISMA_DATABASE_URL || process.env.DATABASE_URL;
 
 const adapter = new PrismaPg({
-  connectionString
+  connectionString,
 });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  console.log('Starting seed...');
+  console.log("Starting seed...");
 
   // Clean existing data
   await prisma.newsArticleTool.deleteMany();
@@ -24,188 +25,225 @@ async function main() {
   await prisma.platform.deleteMany();
   await prisma.category.deleteMany();
 
-  // Create Categories
-  const catCode = await prisma.category.create({
-    data: {
-      slug: 'code-assistants',
-      name: 'Code Assistants',
-      description: 'AI tools that help write, review, and maintain code.',
-      accent: 'blue',
+  const categoriesData = [
+    {
+      slug: "code-assistants",
+      name: "Code Assistants",
+      description: "AI tools that help write, review, and maintain code.",
+      accent: "blue",
       sortOrder: 1,
-    }
-  });
-
-  const catChat = await prisma.category.create({
-    data: {
-      slug: 'chatbots',
-      name: 'Conversational AI',
-      description: 'Chat interfaces for general purpose AI interaction.',
-      accent: 'purple',
+    },
+    {
+      slug: "chatbots",
+      name: "Conversational AI",
+      description: "Chat interfaces for general purpose AI interaction.",
+      accent: "purple",
       sortOrder: 2,
-    }
-  });
-
-  const catImage = await prisma.category.create({
-    data: {
-      slug: 'image-generation',
-      name: 'Image Generation',
-      description: 'Tools for creating and editing images using AI.',
-      accent: 'amber',
+    },
+    {
+      slug: "image-generation",
+      name: "Image Generation",
+      description: "Tools for creating and editing images using AI.",
+      accent: "amber",
       sortOrder: 3,
-    }
-  });
+    },
+    {
+      slug: "audio-generation",
+      name: "Audio Generation",
+      description: "AI tools for music, voice, and audio generation.",
+      accent: "green",
+      sortOrder: 4,
+    },
+    {
+      slug: "video-generation",
+      name: "Video Generation",
+      description: "Create and edit videos using AI.",
+      accent: "red",
+      sortOrder: 5,
+    },
+    {
+      slug: "writing-assistants",
+      name: "Writing Assistants",
+      description: "Tools that help you write better content.",
+      accent: "teal",
+      sortOrder: 6,
+    },
+    {
+      slug: "productivity",
+      name: "Productivity",
+      description: "AI tools to boost your daily productivity.",
+      accent: "amber",
+      sortOrder: 7,
+    },
+    {
+      slug: "design",
+      name: "Design",
+      description: "AI tools for graphic design and UI/UX.",
+      accent: "purple",
+      sortOrder: 8,
+    },
+    {
+      slug: "data-analysis",
+      name: "Data Analysis",
+      description: "Analyze data and generate insights with AI.",
+      accent: "blue",
+      sortOrder: 9,
+    },
+    {
+      slug: "marketing",
+      name: "Marketing",
+      description: "AI tools for marketing and SEO.",
+      accent: "amber",
+      sortOrder: 10,
+    },
+  ];
+
+  const dbCategories = [];
+  for (const c of categoriesData) {
+    dbCategories.push(await prisma.category.create({ data: c }));
+  }
 
   // Create Platforms
-  const platWeb = await prisma.platform.create({
-    data: { slug: 'web', name: 'Web Browser', sortOrder: 1 }
-  });
+  const platformsData = [
+    { slug: "web", name: "Web Browser", sortOrder: 1 },
+    { slug: "macos", name: "macOS", sortOrder: 2 },
+    { slug: "windows", name: "Windows", sortOrder: 3 },
+    { slug: "api", name: "API", sortOrder: 4 },
+    { slug: "ios", name: "iOS", sortOrder: 5 },
+    { slug: "android", name: "Android", sortOrder: 6 },
+  ];
 
-  const platMac = await prisma.platform.create({
-    data: { slug: 'macos', name: 'macOS', sortOrder: 2 }
-  });
+  const dbPlatforms = [];
+  for (const p of platformsData) {
+    dbPlatforms.push(await prisma.platform.create({ data: p }));
+  }
 
-  const platWin = await prisma.platform.create({
-    data: { slug: 'windows', name: 'Windows', sortOrder: 3 }
-  });
+  // Generate 100 tools
+  const adjectives = [
+    "Smart",
+    "Magic",
+    "Quantum",
+    "Neural",
+    "Deep",
+    "Fast",
+    "Auto",
+    "Pro",
+    "Neo",
+    "Hyper",
+    "Super",
+    "Omni",
+    "Synapse",
+    "Nexus",
+    "Echo",
+    "Aura",
+  ];
+  const nouns = [
+    "AI",
+    "Bot",
+    "Genius",
+    "Mind",
+    "Brain",
+    "Forge",
+    "Spark",
+    "Flow",
+    "Wave",
+    "Engine",
+    "Core",
+    "Matrix",
+    "Pulse",
+    "Craft",
+    "Vision",
+    "Voice",
+  ];
+  const pricingModels: PricingModel[] = [
+    "FREE",
+    "FREEMIUM",
+    "PAID",
+    "FREE_TRIAL",
+    "CONTACT",
+  ];
 
-  const platApi = await prisma.platform.create({
-    data: { slug: 'api', name: 'API', sortOrder: 4 }
-  });
+  console.log("Generating tools...");
+  for (let i = 1; i <= 100; i++) {
+    const randomAdjective =
+      adjectives[Math.floor(Math.random() * adjectives.length)];
+    const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+    const toolName = `${randomAdjective} ${randomNoun} ${i}`;
+    const slug = `${randomAdjective.toLowerCase()}-${randomNoun.toLowerCase()}-${i}`;
 
-  // Create Tools
-  const toolCopilot = await prisma.tool.create({
-    data: {
-      slug: 'github-copilot',
-      name: 'GitHub Copilot',
-      tagline: 'Your AI pair programmer',
-      description: 'GitHub Copilot uses the OpenAI Codex to suggest code and entire functions in real-time, right from your editor.',
-      logoUrl: 'https://placehold.co/200x200/222222/ffffff?text=Copilot',
-      websiteUrl: 'https://github.com/features/copilot',
-      companyName: 'GitHub',
-      companyUrl: 'https://github.com',
-      pricingModel: 'PAID',
-      status: 'PUBLISHED',
-      isFeatured: true,
-      popularityScore: 99,
-      publishedAt: new Date(),
-      categories: {
-        create: [{ categoryId: catCode.id }]
-      },
-      platforms: {
-        create: [
-          { platformId: platMac.id },
-          { platformId: platWin.id }
-        ]
-      },
-      capabilities: {
-        create: [
-          { title: 'Code Autocompletion', sortOrder: 1 },
-          { title: 'Chat Interface', sortOrder: 2 }
-        ]
-      },
-      useCases: {
-        create: [
-          { title: 'Writing boilerplates', sortOrder: 1 },
-          { title: 'Writing unit tests', sortOrder: 2 }
-        ]
-      },
-      screenshots: {
-        create: [
-          {
-            imageUrl: 'https://placehold.co/1280x800/0d1117/58a6ff?text=Copilot+Code+Suggestions',
-            altText: 'GitHub Copilot showing inline code suggestions in VS Code',
-            caption: 'Real-time code suggestions as you type',
-            sortOrder: 1,
-          },
-          {
-            imageUrl: 'https://placehold.co/1280x800/0d1117/58a6ff?text=Copilot+Chat',
-            altText: 'GitHub Copilot Chat panel explaining a function',
-            caption: 'Ask Copilot to explain or refactor selected code',
-            sortOrder: 2,
-          },
-        ]
-      }
-    }
-  });
+    // Pick 1-3 random categories
+    const numCats = Math.floor(Math.random() * 3) + 1;
+    const shuffledCats = [...dbCategories].sort(() => 0.5 - Math.random());
+    const selectedCats = shuffledCats.slice(0, numCats);
 
-  const toolChatGPT = await prisma.tool.create({
-    data: {
-      slug: 'chatgpt',
-      name: 'ChatGPT',
-      tagline: 'Get instant answers, find creative inspiration, and learn something new.',
-      description: 'ChatGPT is a conversational AI model developed by OpenAI, capable of understanding and generating human-like text across a wide range of topics.',
-      logoUrl: 'https://placehold.co/200x200/10a37f/ffffff?text=ChatGPT',
-      websiteUrl: 'https://chat.openai.com',
-      companyName: 'OpenAI',
-      companyUrl: 'https://openai.com',
-      pricingModel: 'FREEMIUM',
-      status: 'PUBLISHED',
-      isFeatured: true,
-      popularityScore: 100,
-      publishedAt: new Date(),
-      categories: {
-        create: [{ categoryId: catChat.id }, { categoryId: catCode.id }]
-      },
-      platforms: {
-        create: [
-          { platformId: platWeb.id },
-          { platformId: platMac.id },
-          { platformId: platWin.id },
-          { platformId: platApi.id }
-        ]
-      },
-      capabilities: {
-        create: [
-          { title: 'Text Generation', sortOrder: 1 },
-          { title: 'Data Analysis', sortOrder: 2 }
-        ]
-      },
-      screenshots: {
-        create: [
-          {
-            imageUrl: 'https://placehold.co/1280x800/1a1a2e/10a37f?text=ChatGPT+Conversation',
-            altText: 'ChatGPT showing a multi-turn conversation interface',
-            caption: 'Engage in rich multi-turn conversations with GPT-4o',
-            sortOrder: 1,
-          },
-          {
-            imageUrl: 'https://placehold.co/1280x800/1a1a2e/10a37f?text=ChatGPT+Data+Analysis',
-            altText: 'ChatGPT Advanced Data Analysis interpreting a CSV file',
-            caption: 'Upload data files and get instant analysis with charts',
-            sortOrder: 2,
-          },
-          {
-            imageUrl: 'https://placehold.co/1280x800/1a1a2e/10a37f?text=ChatGPT+Vision',
-            altText: 'ChatGPT Vision mode describing an uploaded image',
-            caption: 'Describe, compare, or debug any image with GPT-4o vision',
-            sortOrder: 3,
-          },
-        ]
-      }
-    }
-  });
+    // Pick 1-4 random platforms
+    const numPlats = Math.floor(Math.random() * 4) + 1;
+    const shuffledPlats = [...dbPlatforms].sort(() => 0.5 - Math.random());
+    const selectedPlats = shuffledPlats.slice(0, numPlats);
 
-  // Create News
+    const pricingModel =
+      pricingModels[Math.floor(Math.random() * pricingModels.length)];
+    // Make most tools published
+    const status = Math.random() > 0.1 ? "PUBLISHED" : "DRAFT";
+
+    await prisma.tool.create({
+      data: {
+        slug: slug,
+        name: toolName,
+        tagline: `The best ${randomAdjective.toLowerCase()} solution for your needs.`,
+        description: `This is a generated AI tool description for ${toolName}. It leverages state-of-the-art models to provide amazing features.`,
+        logoUrl: `https://placehold.co/200x200/${Math.floor(
+          Math.random() * 16777215,
+        )
+          .toString(16)
+          .padStart(6, "0")}/ffffff?text=${toolName.charAt(0)}`,
+        websiteUrl: `https://${slug}.example.com`,
+        companyName: `${randomAdjective} Tech LLC`,
+        companyUrl: `https://${randomAdjective.toLowerCase()}tech.example.com`,
+        pricingModel: pricingModel,
+        status: status,
+        isFeatured: Math.random() > 0.9,
+        popularityScore: Math.floor(Math.random() * 100),
+        publishedAt:
+          status === "PUBLISHED"
+            ? new Date(Date.now() - Math.floor(Math.random() * 10000000000))
+            : null,
+        categories: {
+          create: selectedCats.map((c) => ({ categoryId: c.id })),
+        },
+        platforms: {
+          create: selectedPlats.map((p) => ({ platformId: p.id })),
+        },
+        capabilities: {
+          create: [
+            { title: "Feature One", sortOrder: 1 },
+            { title: "Feature Two", sortOrder: 2 },
+          ],
+        },
+      },
+    });
+  }
+
+  // Create one News
+  const chatbotsCategory = dbCategories.find((c) => c.slug === "chatbots");
   await prisma.newsArticle.create({
     data: {
-      slug: 'gpt4-omni-release',
-      title: 'OpenAI announces GPT-4o, its new flagship model',
-      excerpt: 'The new model brings faster text, voice, and vision capabilities to all ChatGPT users.',
-      body: 'OpenAI has launched GPT-4o, bringing native multimodal capabilities to ChatGPT. The new model processes text, audio, and visual inputs in real time, dramatically reducing latency in voice conversations and improving vision analysis.',
-      sourceName: 'OpenAI Blog',
-      sourceUrl: 'https://openai.com/index/hello-gpt-4o/',
-      topic: 'Releases',
-      status: 'PUBLISHED',
+      slug: "gpt4-omni-release",
+      title: "OpenAI announces GPT-4o, its new flagship model",
+      excerpt:
+        "The new model brings faster text, voice, and vision capabilities to all ChatGPT users.",
+      body: "OpenAI has launched GPT-4o, bringing native multimodal capabilities to ChatGPT. The new model processes text, audio, and visual inputs in real time, dramatically reducing latency in voice conversations and improving vision analysis.",
+      sourceName: "OpenAI Blog",
+      sourceUrl: "https://openai.com/index/hello-gpt-4o/",
+      topic: "Releases",
+      status: "PUBLISHED",
       isFeatured: true,
       publishedAt: new Date(),
-      categoryId: catChat.id,
-      tools: {
-        create: [{ toolId: toolChatGPT.id }]
-      }
-    }
+      categoryId: chatbotsCategory?.id ?? dbCategories[1]?.id,
+    },
   });
 
-  console.log('Seed completed successfully!');
+  console.log("Seed completed successfully!");
 }
 
 main()
