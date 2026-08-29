@@ -21,7 +21,7 @@
 - **`lib/data/tools.ts`** — server-only `getToolsList` (paginated, filtered) + `getCategories`; Prisma read-model mapping.
 - **`app/api/tools/route.ts`** — JSON route handler powering React Query.
 - **`components/providers/QueryProvider.tsx`** — React Query `QueryClientProvider` client boundary.
-- **`components/layout/SiteHeader.tsx`** — sticky translucent nav with logo, links, and Submit Tool CTA.
+- **`components/layout/SiteHeader.tsx`** — sticky translucent nav with logo and links.
 - **`components/layout/SiteFooter.tsx`** — minimal dark footer.
 - **`app/layout.tsx`** — updated root layout: SEO metadata, `QueryProvider`, `SiteHeader`, `SiteFooter`.
 - **`app/page.tsx`** — root redirects to `/tools`.
@@ -35,6 +35,7 @@
 - **`components/tools/ToolRow.tsx`** — single tool row: logo, name+tagline, category badge, pricing, platforms, date.
 - **`components/tools/InfiniteToolsList.tsx`** — React Query `useInfiniteQuery` + IntersectionObserver sentinel; bootstrapped with server `initialData`.
 - **`components/tools/ToolsPagination.tsx`** — controlled prev/next pagination.
+- Hardened listing filters, pagination ordering, reduced-motion behavior, date formatting, theme linting, and seed display values after review.
 - **`next.config.ts`** — `placehold.co` added to image remote patterns.
 - `server-only` package installed.
 - `npx next typegen` run; types generated successfully.

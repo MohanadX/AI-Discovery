@@ -96,6 +96,7 @@ export function InfiniteToolsList({
         lastPage.page < lastPage.pageCount ? lastPage.page + 1 : undefined,
       initialData: () => {
         const isInitial =
+          initialData.page === 1 &&
           filter.q === initialFilter.q &&
           filter.category === initialFilter.category &&
           filter.sort === initialFilter.sort &&

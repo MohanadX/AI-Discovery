@@ -36,6 +36,10 @@ export function ToolsControls({
   };
 
   const handleSearchClear = () => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = null;
+    }
     setLocalQ("");
     onFilterChange({ q: undefined, page: 1 });
   };

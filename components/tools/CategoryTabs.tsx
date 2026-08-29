@@ -37,7 +37,7 @@ export function CategoryTabs({
   const handleTabClick = useCallback(
     (tab: Tab) => {
       if (tab.id === TAB_TOOLS) {
-        onFilterChange({ category: undefined, page: 1 });
+        onFilterChange({ category: "", page: 1 });
       } else {
         onFilterChange({ category: tab.id, page: 1 });
       }
