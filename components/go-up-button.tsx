@@ -1,0 +1,40 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { ArrowUp } from "lucide-react";
+
+export function GoUpButton() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    function updateVisibility() {
+      const nextIsVisible = window.scrollY > 520;
+      setIsVisible((currentIsVisible) =>
+        currentIsVisible === nextIsVisible ? currentIsVisible : nextIsVisible,
+      );
+    }
+
+    updateVisibility();
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+
+    return () => window.removeEventListener("scroll", updateVisibility);
+  }, []);
+
+  return (
+    <button
+      type="button"
+      aria-label="Go to top"
+      title="Go to top"
+      aria-hidden={!isVisible}
+      tabIndex={isVisible ? 0 : -1} // hide from focus if it is hidden
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      className={`fixed bottom-5 right-5 z-40 inline-flex h-11 w-11 items-center justify-center rounded-md border border-[color-mix(in_srgb,var(--accent-primary)_55%,var(--border-default))] bg-[color-mix(in_srgb,var(--bg-surface-raised)_92%,transparent)] text-[var(--accent-primary)] shadow-[0_16px_40px_rgba(0,0,0,0.35)] backdrop-blur transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent-primary)] hover:bg-[var(--accent-primary)] hover:text-[var(--bg-base)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] sm:bottom-6 sm:right-6 ${
+        isVisible
+          ? "translate-y-0 opacity-100"
+          : "pointer-events-none translate-y-3 opacity-0"
+      }`}
+    >
+      <ArrowUp aria-hidden="true" className="h-5 w-5" />
+    </button>
+  );
+}
