@@ -2,11 +2,11 @@
 
 ## Current Phase
 
-- Phase 2 — UI and data layer complete; first module (tools listing) implemented.
+- Phase 4 — Tool Comparison complete.
 
 ## Current Goal
 
-- Tool detail page (`/tools/[slug]`).
+- Latest completed milestone: Tool comparison feature (Phase 4).
 
 ## Completed
 

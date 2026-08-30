@@ -7,14 +7,14 @@ export function CompareContentSkeleton({ count }: { count: number }) {
 
   return (
     <div
-      className="overflow-hidden rounded-2xl border animate-pulse"
+      className="overflow-x-auto rounded-2xl border animate-pulse"
       style={{ borderColor: "var(--color-border)" }}
     >
       {/* Header cards skeleton */}
       <div
         className="grid border-b"
         style={{
-          gridTemplateColumns: `160px repeat(${count}, 1fr)`,
+          gridTemplateColumns: `160px repeat(${count}, minmax(220px, 1fr))`,
           borderColor: "var(--color-border)",
           backgroundColor: "var(--color-surface)",
         }}
@@ -58,7 +58,7 @@ export function CompareContentSkeleton({ count }: { count: number }) {
             key={label}
             className="grid border-b"
             style={{
-              gridTemplateColumns: `160px repeat(${count}, 1fr)`,
+              gridTemplateColumns: `160px repeat(${count}, minmax(220px, 1fr))`,
               borderColor: "var(--color-border)",
             }}
           >

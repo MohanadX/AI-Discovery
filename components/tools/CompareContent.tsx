@@ -21,7 +21,7 @@ function CompareRow({ label, cells }: { label: string; cells: ReactNode[] }) {
     <div
       className="grid border-b"
       style={{
-        gridTemplateColumns: `160px repeat(${cells.length}, 1fr)`,
+        gridTemplateColumns: `160px repeat(${cells.length}, minmax(220px, 1fr))`,
         borderColor: "var(--color-border)",
       }}>
       {/* Label */}
@@ -80,13 +80,13 @@ export async function CompareContent({ ids }: { ids: string[] }) {
 
   return (
     <div
-      className="overflow-hidden rounded-2xl border"
+      className="overflow-x-auto rounded-2xl border"
       style={{ borderColor: "var(--color-border)" }}>
       {/* ── Tool header cards ── */}
       <div
         className="grid border-b"
         style={{
-          gridTemplateColumns: `160px repeat(${colCount}, 1fr)`,
+          gridTemplateColumns: `160px repeat(${colCount}, minmax(220px, 1fr))`,
           borderColor: "var(--color-border)",
           backgroundColor: "var(--color-surface)",
         }}>

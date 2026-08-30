@@ -122,41 +122,53 @@ export function CompareBar() {
             Clear
           </button>
 
-          <Link
-            href={compareHref}
-            prefetch={false}
-            className="inline-flex items-center gap-1.5 rounded-lg px-4 py-1.5 text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-            style={{
-              backgroundColor:
-                count >= 2
-                  ? "var(--color-accent)"
-                  : "var(--color-surface-active)",
-              color:
-                count >= 2
-                  ? "#ffffff"
-                  : "var(--color-foreground-faint)",
-              pointerEvents: count >= 2 ? "auto" : "none",
-              opacity: count >= 2 ? 1 : 0.5,
-            }}
-            aria-disabled={count < 2}
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
+          {count >= 2 ? (
+            <Link
+              href={compareHref}
+              prefetch={false}
+              className="inline-flex items-center gap-1.5 rounded-lg px-4 py-1.5 text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+              style={{
+                backgroundColor: "var(--color-accent)",
+                color: "#ffffff",
+              }}
             >
-              <path d="M3 3h4v4H3zM9 3h4v4H9zM3 9h4v4H3z" />
-            </svg>
-            Compare {count > 0 ? `(${count})` : ""}
-          </Link>
+              <CompareIcon />
+              Compare ({count})
+            </Link>
+          ) : (
+            <button
+              type="button"
+              disabled
+              className="inline-flex items-center gap-1.5 rounded-lg px-4 py-1.5 text-sm font-semibold opacity-50"
+              style={{
+                backgroundColor: "var(--color-surface-active)",
+                color: "var(--color-foreground-faint)",
+              }}
+            >
+              <CompareIcon />
+              Compare ({count})
+            </button>
+          )}
         </div>
       </div>
     </div>
+  );
+}
+
+function CompareIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M3 3h4v4H3zM9 3h4v4H9zM3 9h4v4H3z" />
+    </svg>
   );
 }

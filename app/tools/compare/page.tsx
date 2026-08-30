@@ -24,6 +24,7 @@ export default async function ComparePage({ searchParams }: Props) {
     .split(",")
     .map((id) => id.trim())
     .filter((id) => /^[a-zA-Z0-9_-]+$/.test(id))
+    .filter((id, index, allIds) => allIds.indexOf(id) === index)
     .slice(0, 3);
 
   return (
