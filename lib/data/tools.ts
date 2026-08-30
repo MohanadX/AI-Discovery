@@ -143,3 +143,48 @@ export async function getCategories(): Promise<CategoryOption[]> {
   });
   return categories;
 }
+
+export type ToolDetailResult = Awaited<ReturnType<typeof getToolById>>;
+
+export async function getToolById(id: string) {
+  const tool = await prisma.tool.findUnique({
+    where: { id },
+    include: {
+      categories: {
+        select: {
+          category: {
+            select: { slug: true, name: true, accent: true },
+          },
+        },
+        orderBy: { category: { sortOrder: "asc" } },
+      },
+      platforms: {
+        select: {
+          platform: {
+            select: { slug: true, name: true },
+          },
+        },
+        orderBy: { platform: { sortOrder: "asc" } },
+      },
+      capabilities: {
+        orderBy: { sortOrder: "asc" },
+      },
+      useCases: {
+        orderBy: { sortOrder: "asc" },
+      },
+      screenshots: {
+        orderBy: { sortOrder: "asc" },
+      },
+    },
+  });
+
+  if (!tool || tool.status !== "PUBLISHED") {
+    return null;
+  }
+
+  return {
+    ...tool,
+    categories: tool.categories.map((tc) => tc.category),
+    platforms: tool.platforms.map((tp) => tp.platform),
+  };
+}

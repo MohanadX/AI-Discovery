@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState, useTransition, useEffect } from "react";
+import { useRef, useState, useTransition } from "react";
 import type { ToolsFilter } from "@/lib/domain/tools";
 
 const SORT_OPTIONS = [

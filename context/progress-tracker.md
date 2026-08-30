@@ -41,16 +41,20 @@
 - `npx next typegen` run; types generated successfully.
 - `npx tsc --noEmit` — **0 errors**.
 
+- **`/tools/[id]/[slug]`** — Tool Detail page with rich description, screenshot gallery, capabilities, use cases, and sticky metadata sidebar.
+- **`/news`** — News Listing page with infinite scroll using React Query `useInfiniteQuery`.
+- **`lib/domain/news.ts`** & **`lib/data/news.ts`** — Domain types and Prisma data access for News.
+- **`app/api/news/route.ts`** — JSON route handler powering React Query for infinite scrolling.
+- Hardened news pagination, canonical tool redirects, dark theme/font wiring, footer year rendering, separator orientation styles, and Tailwind Stylelint handling after review.
+
 ## In Progress
 
-- (None — tools listing complete and type-checked.)
+- (None — Phase 3 Tool Detail and News Listing are complete.)
 
 ## Next Up
 
-1. Tool detail page — `/tools/[slug]`.
-2. News listing — `/news`.
-3. News detail — `/news/[slug]`.
-4. Full responsive/accessibility pass and deployment verification.
+1. News detail — `/news/[slug]`.
+2. Full responsive/accessibility pass and deployment verification.
 
 ## Open Questions
 

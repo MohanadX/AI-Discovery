@@ -22,7 +22,7 @@ export function ToolRow({ tool }: { tool: ToolListItem }) {
 
   return (
     <Link
-      href={`/tools/${tool.slug}`}
+      href={`/tools/${tool.id}/${tool.slug}`}
       className="group flex items-center gap-4 border-b px-4 py-3.5 transition-colors"
       style={{
         borderColor: "var(--color-border)",
