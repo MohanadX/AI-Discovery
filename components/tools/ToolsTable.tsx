@@ -8,6 +8,7 @@ const COLUMNS = [
   { label: "Pricing", className: "hidden w-24 shrink-0 lg:block" },
   { label: "Platforms", className: "hidden w-28 shrink-0 xl:block" },
   { label: "Released", className: "hidden w-28 shrink-0 text-right lg:block" },
+  { label: "Compare", className: "w-20 shrink-0 text-right" },
 ];
 
 function TableHeader() {

@@ -2,11 +2,11 @@
 
 ## Current Phase
 
-- Phase 2 — UI and data layer complete; first module (tools listing) implemented.
+- Phase 4 — Tool Comparison complete.
 
 ## Current Goal
 
-- Tool detail page (`/tools/[slug]`).
+- Latest completed milestone: Tool comparison feature (Phase 4).
 
 ## Completed
 
@@ -46,10 +46,24 @@
 - **`lib/domain/news.ts`** & **`lib/data/news.ts`** — Domain types and Prisma data access for News.
 - **`app/api/news/route.ts`** — JSON route handler powering React Query for infinite scrolling.
 - Hardened news pagination, canonical tool redirects, dark theme/font wiring, footer year rendering, separator orientation styles, and Tailwind Stylelint handling after review.
+- **Tool comparison feature** (Phase 4):
+  - **`lib/compare-store.ts`** — `useSyncExternalStore`-compatible localStorage store (server snapshot `[]` → no hydration mismatch). Supports cross-tab sync via `window.storage` events. Max 3 tools.
+  - **`components/compare/CompareContext.tsx`** — React context provider (`CompareProvider`) exposing `selected`, `toggle`, `isSelected`, `canAdd`, `clear`. Uses React 19 `<Context value={...}>` syntax.
+  - **`components/compare/CompareSelectButton.tsx`** — Shared client button, `"row"` (compact pill) and `"detail"` (larger) variants. Stops event propagation so row clicks don't navigate.
+  - **`components/compare/CompareBar.tsx`** — Fixed bottom bar showing selected tool chips + Link to `/tools/compare`. Appears/disappears based on selection count. Requires ≥ 2 tools to enable the Compare link.
+    - Added per-tool remove buttons to selected chips so users can delete individual tools from the comparison state directly from the bar.
+  - **`app/tools/layout.tsx`** — New tools layout scoping `CompareProvider` + `CompareBar` to `/tools/**` only (listing + detail, nowhere else).
+  - **`components/tools/ToolRow.tsx`** — Restructured root element from `<Link>` to `<div>`. Link covers the non-button area; `CompareSelectButton` is a sibling outside the Link.
+  - **`components/tools/ToolDetail.tsx`** — Stays SSR. `CompareSelectButton variant="detail"` injected as a client island with minimal `{ id, name, slug }` props.
+  - **`components/tools/ToolsTable.tsx`** — Added "Compare" column header.
+  - **`app/tools/compare/page.tsx`** — Compare page: static header renders immediately; dynamic `<CompareContent>` wrapped in `<Suspense>`.
+  - **`components/tools/CompareContent.tsx`** — Server component fetching tools in parallel by ID, renders side-by-side grid (pricing, platforms, company, launch, capabilities, use cases, featured).
+  - **`components/tools/CompareContentSkeleton.tsx`** — Animated skeleton placeholder for comparison table.
+- `npx tsc --noEmit` — **0 errors** after compare feature.
 
 ## In Progress
 
-- (None — Phase 3 Tool Detail and News Listing are complete.)
+- (None — Phase 4 Tool Comparison is complete.)
 
 ## Next Up
 

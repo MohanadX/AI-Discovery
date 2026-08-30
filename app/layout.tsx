@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/layout/SiteHeader";
@@ -24,13 +24,16 @@ export const metadata: Metadata = {
   description:
     "Discover, compare, and evaluate the best AI tools, models, and products. A curated public directory for AI builders and enthusiasts.",
   keywords: ["AI tools", "artificial intelligence", "AI directory", "LLM", "machine learning"],
-  themeColor: "#000000",
   openGraph: {
     type: "website",
     title: "AI Discovery",
     description: "Find the best AI tools in one place.",
     siteName: "AI Discovery",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#000000",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
