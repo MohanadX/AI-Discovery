@@ -164,7 +164,7 @@ async function main() {
   ];
 
   console.log("Generating tools...");
-  for (let i = 1; i <= 100; i++) {
+  for (let i = 1; i <= 30; i++) {
     const randomAdjective =
       adjectives[Math.floor(Math.random() * adjectives.length)];
     const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
@@ -224,24 +224,39 @@ async function main() {
     });
   }
 
-  // Create one News
-  const chatbotsCategory = dbCategories.find((c) => c.slug === "chatbots");
-  await prisma.newsArticle.create({
-    data: {
-      slug: "gpt4-omni-release",
-      title: "OpenAI announces GPT-4o, its new flagship model",
-      excerpt:
-        "The new model brings faster text, voice, and vision capabilities to all ChatGPT users.",
-      body: "OpenAI has launched GPT-4o, bringing native multimodal capabilities to ChatGPT. The new model processes text, audio, and visual inputs in real time, dramatically reducing latency in voice conversations and improving vision analysis.",
-      sourceName: "OpenAI Blog",
-      sourceUrl: "https://openai.com/index/hello-gpt-4o/",
-      topic: "Releases",
-      status: "PUBLISHED",
-      isFeatured: true,
-      publishedAt: new Date(),
-      categoryId: chatbotsCategory?.id ?? dbCategories[1]?.id,
-    },
-  });
+  // Create 20 News Articles
+  console.log("Generating news articles...");
+  const newsTopics = ["Releases", "Funding", "Research", "Acquisitions", "Opinion", "Guide"];
+  const newsSources = [
+    { name: "OpenAI Blog", url: "https://openai.com/blog" },
+    { name: "Anthropic News", url: "https://anthropic.com/news" },
+    { name: "Google DeepMind", url: "https://deepmind.google/discover" },
+    { name: "TechCrunch AI", url: "https://techcrunch.com/category/artificial-intelligence/" },
+    { name: "The Verge AI", url: "https://theverge.com/ai-artificial-intelligence" }
+  ];
+
+  for (let i = 1; i <= 20; i++) {
+    const randomTopic = newsTopics[Math.floor(Math.random() * newsTopics.length)];
+    const randomSource = newsSources[Math.floor(Math.random() * newsSources.length)];
+    const randomCategory = dbCategories[Math.floor(Math.random() * dbCategories.length)];
+    
+    await prisma.newsArticle.create({
+      data: {
+        slug: `ai-news-update-${i}-${Date.now()}`,
+        title: `AI Industry Update ${i}: Major Developments in ${randomTopic}`,
+        excerpt: `A quick summary of the latest advancements in ${randomTopic} and what it means for the ecosystem.`,
+        body: `Local summary: Recent events have shown significant progress in the field of AI, particularly concerning ${randomTopic.toLowerCase()}. \n\nExperts from ${randomSource.name} note that these changes will likely affect how developers and end-users interact with next-generation models. The new techniques introduced are designed to improve both efficiency and accuracy across multiple domains.\n\nFor the full story and detailed technical breakdown, visit the original source.`,
+        sourceName: randomSource.name,
+        sourceUrl: randomSource.url,
+        topic: randomTopic,
+        status: "PUBLISHED",
+        isFeatured: i <= 3,
+        readingMinutes: Math.floor(Math.random() * 5) + 2,
+        publishedAt: new Date(Date.now() - Math.floor(Math.random() * 10000000000)),
+        categoryId: randomCategory.id,
+      },
+    });
+  }
 
   console.log("Seed completed successfully!");
 }
