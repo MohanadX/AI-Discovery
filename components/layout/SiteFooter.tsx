@@ -1,4 +1,8 @@
-export function SiteFooter() {
+import { cacheLife } from "next/cache";
+
+export async function SiteFooter() {
+  "use cache";
+  cacheLife("days");
   return (
     <footer
       className="mt-auto border-t py-6"
