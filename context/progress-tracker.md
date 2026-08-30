@@ -45,6 +45,7 @@
 - **`/news`** — News Listing page with infinite scroll using React Query `useInfiniteQuery`.
 - **`lib/domain/news.ts`** & **`lib/data/news.ts`** — Domain types and Prisma data access for News.
 - **`app/api/news/route.ts`** — JSON route handler powering React Query for infinite scrolling.
+- Hardened news pagination, canonical tool redirects, dark theme/font wiring, footer year rendering, separator orientation styles, and Tailwind Stylelint handling after review.
 
 ## In Progress
 

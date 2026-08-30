@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { getToolById } from "@/lib/data/tools";
 import { ToolDetail } from "@/components/tools/ToolDetail";
@@ -33,9 +33,7 @@ async function ToolDetailFetcher({ params }: Props) {
 
   // Ensure canonical slug redirect if URL slug is mismatched
   if (tool.slug !== slug) {
-    // We could redirect here using redirect(`/tools/${tool.id}/${tool.slug}`)
-    // but Next.js prefers canonical tags for SEO, or we can just redirect.
-    // For simplicity, we just render the content.
+    redirect(`/tools/${tool.id}/${tool.slug}`);
   }
 
   return <ToolDetail tool={tool} />;
